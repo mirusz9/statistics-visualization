@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Statistics visualization</title>
+		<script src="https://cdn.plot.ly/plotly-2.4.2.min.js"></script>
+		<script src="./index.js" defer></script>
+	</head>
+	<body>
+		<canvas id="chart"></canvas><br />
+		<label for="yAxis">y-axis</label>
+		<select name="yAxis" id="yAxis">
+			<option value="date">Date</option>
+			<option value="happiness">Happiness</option>
+			<option value="homeArrivalTime">Home Arrival Time</option>
+			<option value="moneySpent">Money Spent</option>
+			<option value="numberOfTests">Number of tests</option>
+			<option value="productivity">Productivity</option>
+			<option value="stressLevel">Stress Level</option>
+			<option value="temperature">temperature</option>
+			<option selected="selected" value="wakeupTime">Wakeup Time</option>
+			<option value="windDirection">Wind direction</option>
+			<option value="windSpeed">Wind Speed</option>
+			<option value="dogWalkStartTime">Dogwalk Start Time</option>
+			<option value="dogWalkDuration">Dogwalk duration</option>
+			<option value="workoutStartTime">Workout Start Time</option>
+			<option value="workoutDuration">Workout duration</option></select
+		><br />
+		<label for="xAxis">x-axis</label>
+		<select name="xAxis" id="xAxis">
+			<option selected="selected" value="date">Date</option>
+			<option value="happiness">Happiness</option>
+			<option value="homeArrivalTime">Home Arrival Time</option>
+			<option value="moneySpent">Money Spent</option>
+			<option value="numberOfTests">Number of tests</option>
+			<option value="productivity">Productivity</option>
+			<option value="stressLevel">Stress Level</option>
+			<option value="temperature">temperature</option>
+			<option value="wakeupTime">Wakeup Time</option>
+			<option value="windDirection">Wind direction</option>
+			<option value="windSpeed">Wind Speed</option>
+			<option value="dogWalkStartTime">Dogwalk Start Time</option>
+			<option value="dogWalkDuration">Dogwalk duration</option>
+			<option value="workoutStartTime">Workout Start Time</option>
+			<option value="workoutDuration">Workout duration</option>
+		</select>
+	</body>
+</html>
