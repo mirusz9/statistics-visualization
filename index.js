@@ -1,9 +1,11 @@
 const xAxisE = document.querySelector('#xAxis');
 const yAxisE = document.querySelector('#yAxis');
+const epsilonE = document.querySelector('#epsilon');
 
 let chart;
+let epsilon = epsilonE.value;
 
-const approximatelyEquals = (a, b, epsilon) => {
+const approximatelyEquals = (a, b) => {
 	return Math.abs(a - b) < epsilon;
 };
 
@@ -62,7 +64,7 @@ const getDataPoints = (xName, yName, data) => {
 
 				const ex = dpXObj ? existingPoint.x.value : existingPoint.x;
 				const ey = dpYObj ? existingPoint.y.value : existingPoint.y;
-				return approximatelyEquals(dx, ex, 0.1) && approximatelyEquals(dy, ey, 0.1);
+				return approximatelyEquals(dx, ex) && approximatelyEquals(dy, ey);
 			});
 			if (existingIndex !== -1) {
 				trimmedData[existingIndex].count++;
@@ -118,6 +120,10 @@ const data = fetch('https://stats.mirusz9.com/getData', {
 		});
 		yAxisE.addEventListener('change', (e) => {
 			drawChart(xAxisE.value, e.target.value, data);
+		});
+		epsilonE.addEventListener('change', (e) => {
+			epsilon = e.target.value;
+			drawChart(xAxisE.value, yAxisE.value, data);
 		});
 		drawChart(xAxisE.value, yAxisE.value, data);
 	});
