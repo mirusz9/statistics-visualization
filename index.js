@@ -3,6 +3,10 @@ const yAxisE = document.querySelector('#yAxis');
 
 let chart;
 
+const approximatelyEquals = (a, b, epsilon) => {
+	return Math.abs(a - b) < epsilon;
+};
+
 const convertToHours = (value) => {
 	if (value instanceof Array) return value.map(convertToHours);
 	const date = new Date(value - 2 * 60 * 60 * 1000);
@@ -50,16 +54,21 @@ const getDataPoints = (xName, yName, data) => {
 		}
 
 		dataPoints.forEach((dataPoint) => {
-			const existingIndex = trimmedData.findIndex((dayObj) => {
-				const dx = dataPoint.x instanceof Object ? dataPoint.x.value : dataPoint.x;
-				const dy = dataPoint.y instanceof Object ? dataPoint.y.value : dataPoint.y;
+			dpXObj = dataPoint.x instanceof Object;
+			dpYObj = dataPoint.y instanceof Object;
+			const existingIndex = trimmedData.findIndex((existingPoint) => {
+				const dx = dpXObj ? dataPoint.x.value : dataPoint.x;
+				const dy = dpYObj ? dataPoint.y.value : dataPoint.y;
 
-				const ox = dayObj.x instanceof Object ? dayObj.x.value : dayObj.x;
-				const oy = dayObj.y instanceof Object ? dayObj.y.value : dayObj.y;
-				return ox == dx && oy == dy;
+				const ex = dpXObj ? existingPoint.x.value : existingPoint.x;
+				const ey = dpYObj ? existingPoint.y.value : existingPoint.y;
+				return approximatelyEquals(dx, ex, 0.1) && approximatelyEquals(dy, ey, 0.1);
 			});
-			if (existingIndex !== -1) trimmedData[existingIndex].count++;
-			else
+			if (existingIndex !== -1) {
+				trimmedData[existingIndex].count++;
+				if (dpXObj) trimmedData[existingIndex].x.label += `, ${dataPoint.x.label}`;
+				if (dpYObj) trimmedData[existingIndex].y.label += `, ${dataPoint.y.label}`;
+			} else
 				trimmedData.push({
 					x: dataPoint.x,
 					y: dataPoint.y,
@@ -74,7 +83,23 @@ const getDataPoints = (xName, yName, data) => {
 const drawChart = (xName, yName, data) => {
 	// console.log(xName, yName, data);
 	const dataPoints = getDataPoints(xName, yName, data);
-	const trace = {};
+	console.log(dataPoints);
+	const trace = {
+		type: 'scatter',
+		mode: 'markers',
+		name: 'test',
+		x: dataPoints.map((dataPoint) => (dataPoint.x instanceof Object ? dataPoint.x.value : dataPoint.x)),
+		y: dataPoints.map((dataPoint) => (dataPoint.y instanceof Object ? dataPoint.y.value : dataPoint.y)),
+		marker: {
+			size: dataPoints.map((dataPoint) => Math.sqrt((dataPoint.count * 300) / Math.PI)),
+		},
+		text: dataPoints.map((dataPoint) => {
+			const xLabel = dataPoint.x instanceof Object ? dataPoint.x.label : null;
+			const yLabel = dataPoint.y instanceof Object ? dataPoint.y.label : null;
+			return `${xLabel ? `x: ${xLabel}` : ''}${xLabel && yLabel ? '\n' : ''}${yLabel ? `y: ${yLabel}` : ''}`;
+		}),
+	};
+	console.log(trace);
 
 	const layout = { title: `${yName} vs. ${xName}` };
 	chart = Plotly.newPlot('chart', [trace], layout);
