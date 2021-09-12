@@ -83,7 +83,7 @@ const getDataPoints = (xName, yName, data) => {
 const drawChart = (xName, yName, data) => {
 	// console.log(xName, yName, data);
 	const dataPoints = getDataPoints(xName, yName, data);
-	console.log(dataPoints);
+	// console.log(dataPoints);
 	const trace = {
 		type: 'scatter',
 		mode: 'markers',
@@ -99,7 +99,7 @@ const drawChart = (xName, yName, data) => {
 			return `${xLabel ? `x: ${xLabel}` : ''}${xLabel && yLabel ? '\n' : ''}${yLabel ? `y: ${yLabel}` : ''}`;
 		}),
 	};
-	console.log(trace);
+	// console.log(trace);
 
 	const layout = { title: `${yName} vs. ${xName}` };
 	chart = Plotly.newPlot('chart', [trace], layout);
